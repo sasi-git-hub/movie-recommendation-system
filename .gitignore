@@ -1,0 +1,2 @@
+# Exclude __pycache__ directories from being tracked
+__pycache__/
