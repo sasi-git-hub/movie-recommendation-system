@@ -10,8 +10,12 @@ import requests
 from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie_recommendations.db'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "dev-secret-key")
+
+# Use an instance DB path so it works on Render/Gunicorn
+os.makedirs(app.instance_path, exist_ok=True)
+db_path = os.path.join(app.instance_path, "movie_recommendations.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -706,15 +710,8 @@ def get_content_based_recommendations(user_id, num_recommendations=10, user_age=
 # Initialize database and seed data
 def init_db():
     with app.app_context():
-        # Drop and recreate tables to handle schema changes (for development only)
-        # In production, use proper migrations (Flask-Migrate)
-        try:
-            db.drop_all()
-            db.create_all()
-            print("Database tables created/updated successfully")
-        except Exception as e:
-            print(f"Note: {e}")
-            db.create_all()
+        # Create tables if they don't exist. (Don't drop in production.)
+        db.create_all()
         
         # Check if movies already exist
         if Movie.query.count() == 0:
@@ -780,6 +777,13 @@ def seed_movies():
     db.session.commit()
     print(f"Seeded {len(movies_data)} movies into the database")
 
-if __name__ == '__main__':
+# Ensure DB is ready even when run via Gunicorn (Render)
+try:
     init_db()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+except Exception as e:
+    # Don't crash the process on import; Render logs will show the error.
+    print(f"Database init warning: {e}")
+
+if __name__ == '__main__':
+    port = int(os.getenv("PORT", "5000"))
+    app.run(debug=True, host='0.0.0.0', port=port)
