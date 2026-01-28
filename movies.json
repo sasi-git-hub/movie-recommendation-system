@@ -1,0 +1,25 @@
+[
+  {
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "year": 1994,
+    "director": "Frank Darabont",
+    "cast": "Tim Robbins, Morgan Freeman, Bob Gunton",
+    "age_rating": "R",
+    "popularity": 0,
+    "poster_url": "https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg",
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
+  },
+  {
+    "title": "The Godfather",
+    "genre": "Crime, Drama",
+    "year": 1972,
+    "director": "Francis Ford Coppola",
+    "cast": "Marlon Brando, Al Pacino, James Caan",
+    "age_rating": "R",
+    "popularity": 0,
+    "poster_url": "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
+    "description": "The aging patriarch of an organized crime dynasty transfers control to his reluctant son."
+  }
+]
+
